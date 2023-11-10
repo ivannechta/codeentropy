@@ -4,7 +4,6 @@
 #include <iostream>
 #include <math.h>
 
-
 using namespace std;
 class NdimArray{
 private:
@@ -22,12 +21,8 @@ public:
     NdimArray(int _size,int n){
         len = _size;
         dim = n;
-        arraySize=1;
+        arraySize=pow(len,n);
         TotalSum=0;
-
-        for (int i=0;i<n;i++){
-                arraySize*=len;
-        }
 
         A=new float [arraySize];
         for (int i=0;i<arraySize;i++){
@@ -40,13 +35,14 @@ public:
     }
 
     float CalcEntropy(){
-        float p, H;
+        float p, H=0;
         for (int i=0;i<arraySize;i++){
-            p=A[i]/TotalSum;
-            H+=p*log2(p);
+            p=1.0*A[i]/TotalSum;
+            if (p!=0) H+=p*log2(p);
         }
         return -H;
     }
+
     void add(int *_A){
         int tmp=0;
         for (int i=0;i<dim;i++){

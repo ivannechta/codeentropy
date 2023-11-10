@@ -7,30 +7,18 @@
 using namespace std;
 #define FILENAME "/home/user/Temp/Entropy2/a.txt"
 int main()
-{ DataBase *DB=new DataBase();
+{
+    DataBase *DB=new DataBase();
 
-DB->Load(FILENAME);
-DB->vivod(DB->Root);
+    DB->ReadChains(2, FILENAME);
 
- NdimArray *A=new NdimArray(10,2);
- DB->ReadChains(A,FILENAME);
+    cout<<DB->CalcEntropy();
 
- for (int i=0;i<10;i++){
-    for (int j=0;j<10;j++){
-            cout<<A->get(i*10+j)<<" ";
-    }
-    cout<<"\n";
- }
-
-delete DB;
-
-
-cout<<A->CalcEntropy();
+    delete DB;
 
 
 
-
-system("PAUSE");
+    system("PAUSE");
 
     return EXIT_SUCCESS;
 }

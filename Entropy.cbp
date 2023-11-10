@@ -20,6 +20,8 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
+		<Unit filename="DBCommands.h" />
+		<Unit filename="NdimArray.h" />
 		<Unit filename="main.cpp" />
 		<Extensions />
 	</Project>

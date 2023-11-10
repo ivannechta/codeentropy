@@ -20,6 +20,7 @@ private:
     char **commands;
     int commandsCount;
     int tvFilter;
+    NdimArray *A;
 
     void makeHash(Node *t,int* i){
         t->hash=*i;
@@ -31,7 +32,29 @@ private:
             makeHash(t->R,i);
         }
     }
+    int Load(char *fileName){
+        FILE *f=fopen(fileName,"rt");
+        if (f==NULL) {
+            printf("File not found\n"); throw 2;
+        }
+        char cmd[20],tmp[10];
+        bool endline;
 
+        while (!feof(f)){
+                fscanf(f,"%s",cmd);
+                addCommand(cmd);
+                endline=false;
+                while(!endline&& !feof(f)){
+                        fscanf(f,"%s",tmp);
+                        if (tmp[0]=='+'){
+                            endline=true;
+                        }
+                }
+
+        }
+        fclose(f);
+        return makeHash();
+    }
 public:
     Node *Root;int treeCount;
     void addCommand(char* cmd){
@@ -74,9 +97,10 @@ public:
         printf("%d %s %d\n",t->hash, t->name,t->count);
         vivod(t->R);
     }
-    void makeHash(){
+    int makeHash(){
         int i=0;
         makeHash(Root,&i);
+        return i;
     }
     int findCMD(char * cmd){
         Node *t=Root;
@@ -86,7 +110,6 @@ public:
         }
         return -1;
     }
-
 
     void deleteTree(Node *t){
         if (t!=NULL){
@@ -105,30 +128,10 @@ public:
         deleteTree(Root);
     }
 
-    void Load(char *fileName){
-        FILE *f=fopen(fileName,"rt");
-        if (f==NULL) {
-            printf("File not found\n"); throw 2;
-        }
-        char cmd[20],tmp[10];
-        bool endline;
+    void ReadChains(int Dimension ,char *fileName){
+        int differentCommandsCnt=Load(fileName);
+        A=new NdimArray(differentCommandsCnt,Dimension);
 
-        while (!feof(f)){
-                fscanf(f,"%s",cmd);
-                addCommand(cmd);
-                endline=false;
-                while(!endline&& !feof(f)){
-                        fscanf(f,"%s",tmp);
-                        if (tmp[0]=='+'){
-                            endline=true;
-                        }
-                }
-
-        }
-        fclose(f);
-        makeHash();
-    }
-    void ReadChains(NdimArray *A,char *fileName){
         FILE *f=fopen(fileName,"rt");
         if (f==NULL) {
             printf("File not found\n"); throw 2;
@@ -148,15 +151,18 @@ public:
                         A->add(indexes);
                 }
                 endline=false;
-                while(!endline&& !feof(f)){
+                while(!endline && !feof(f)){
                         fscanf(f,"%s",tmp);
                         if (tmp[0]=='+'){
                             endline=true;
                         }
                 }
-
         }
         fclose(f);
+    }
+
+    float CalcEntropy(){
+        return A->CalcEntropy();
     }
 };
 
