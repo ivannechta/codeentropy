@@ -36,6 +36,7 @@ public:
 
     float CalcEntropy(){
         float p, H=0;
+        if (TotalSum==0) return 0;
         for (int i=0;i<arraySize;i++){
             p=1.0*A[i]/TotalSum;
             if (p!=0) H+=p*log2(p);
