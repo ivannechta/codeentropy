@@ -5,7 +5,8 @@
 #include "NdimArray.h"
 
 
-#define MAX_COMMAND_LEN 6
+#define MAX_COMMAND_LEN 8
+#define MAX_INSTRUCTION_SIZE 50
 
 struct Node{
     char name[7];
@@ -37,17 +38,21 @@ private:
         if (f==NULL) {
             printf("File not found\n"); throw 2;
         }
-        char cmd[20],tmp[10];
+        char cmd[MAX_INSTRUCTION_SIZE],tmp[MAX_INSTRUCTION_SIZE];
         bool endline;
 
         while (!feof(f)){
                 fscanf(f,"%s",cmd);
+                if (cmd[0]=='*'){
+                    continue;
+                }
                 addCommand(cmd);
                 endline=false;
                 while(!endline&& !feof(f)){
                         fscanf(f,"%s",tmp);
                         if (tmp[0]=='+'){
                             endline=true;
+
                         }
                 }
 
@@ -57,6 +62,7 @@ private:
     }
 public:
     Node *Root;int treeCount;
+
     void addCommand(char* cmd){
         if (Root==NULL){
             Root=new Node;
@@ -136,15 +142,17 @@ public:
         if (f==NULL) {
             printf("File not found\n"); throw 2;
         }
-        char cmd[20],tmp[10];
+        char cmd[MAX_INSTRUCTION_SIZE],tmp[MAX_INSTRUCTION_SIZE];
         bool endline;
 
-        int *indexes=new int [A->getDim()], ind_i;
-
-        ind_i=0;
+        int *indexes=new int [A->getDim()], ind_i=0;
 
         while (!feof(f)){
                 fscanf(f,"%s",cmd);
+                if (cmd[0]=='*'){ //starts new function
+                    ind_i=0;
+                    continue;
+                }
                 indexes[ind_i++]=findCMD(cmd);
                 if (ind_i==A->getDim()){
                         ind_i=0;

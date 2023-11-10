@@ -4,21 +4,20 @@
 #include "DBCommands.h"
 #include "NdimArray.h"
 
+
+#define FILENAME "e:\\temp\\Entropy2\\commands_from_exe.txt"
+
 using namespace std;
-#define FILENAME "/home/user/Temp/Entropy2/a.txt"
 int main()
 {
-    DataBase *DB=new DataBase();
+    DataBase *DB;
+    for (int i=1;i<=5;i++){
+        DB=new DataBase();
+        DB->ReadChains(i, (char *)FILENAME);
+        printf("Memory=%d, %.3f\n",i,DB->CalcEntropy());
+        delete DB;
+    }
 
-    DB->ReadChains(2, FILENAME);
-
-    cout<<DB->CalcEntropy();
-
-    delete DB;
-
-
-
-    system("PAUSE");
 
     return EXIT_SUCCESS;
 }
