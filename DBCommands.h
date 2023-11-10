@@ -1,6 +1,9 @@
 #ifndef DBCOMMANDS_H_INCLUDED
 #define DBCOMMANDS_H_INCLUDED
 #include <string.h>
+#include <stdio.h>
+#include "NdimArray.h"
+
 
 #define MAX_COMMAND_LEN 6
 
@@ -103,7 +106,57 @@ public:
     }
 
     void Load(char *fileName){
+        FILE *f=fopen(fileName,"rt");
+        if (f==NULL) {
+            printf("File not found\n"); throw 2;
+        }
+        char cmd[20],tmp[10];
+        bool endline;
 
+        while (!feof(f)){
+                fscanf(f,"%s",cmd);
+                addCommand(cmd);
+                endline=false;
+                while(!endline&& !feof(f)){
+                        fscanf(f,"%s",tmp);
+                        if (tmp[0]=='+'){
+                            endline=true;
+                        }
+                }
+
+        }
+        fclose(f);
+        makeHash();
+    }
+    void ReadChains(NdimArray *A,char *fileName){
+        FILE *f=fopen(fileName,"rt");
+        if (f==NULL) {
+            printf("File not found\n"); throw 2;
+        }
+        char cmd[20],tmp[10];
+        bool endline;
+
+        int *indexes=new int [A->getDim()], ind_i;
+
+        ind_i=0;
+
+        while (!feof(f)){
+                fscanf(f,"%s",cmd);
+                indexes[ind_i++]=findCMD(cmd);
+                if (ind_i==A->getDim()){
+                        ind_i=0;
+                        A->add(indexes);
+                }
+                endline=false;
+                while(!endline&& !feof(f)){
+                        fscanf(f,"%s",tmp);
+                        if (tmp[0]=='+'){
+                            endline=true;
+                        }
+                }
+
+        }
+        fclose(f);
     }
 };
 

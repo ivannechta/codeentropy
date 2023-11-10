@@ -5,31 +5,29 @@
 #include "NdimArray.h"
 
 using namespace std;
-
+#define FILENAME "/home/user/Temp/Entropy2/a.txt"
 int main()
-{ DataBase *DB=new DataBase() ;
+{ DataBase *DB=new DataBase();
 
-DB->addCommand("c");
-DB->addCommand("a");
-DB->addCommand("a");
-DB->addCommand("e");
-DB->addCommand("e");
-DB->addCommand("b");
-
-DB->makeHash();
+DB->Load(FILENAME);
 DB->vivod(DB->Root);
 
-cout << DB->findCMD("e");
+ NdimArray *A=new NdimArray(10,2);
+ DB->ReadChains(A,FILENAME);
+
+ for (int i=0;i<10;i++){
+    for (int j=0;j<10;j++){
+            cout<<A->get(i*10+j)<<" ";
+    }
+    cout<<"\n";
+ }
+
 delete DB;
 
- NdimArray *A=new NdimArray(3,1);
 
-    A->add(0);
-    A->add(0);
-    A->add(1);
-    A->add(2);
+cout<<A->CalcEntropy();
 
-    cout<<A->CalcEntropy();
+
 
 
 system("PAUSE");
