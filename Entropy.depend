@@ -1,0 +1,15 @@
+# depslib dependency file v1.0
+1699585883 source:/home/user/Temp/Entropy2/Entropy/main.cpp
+	<cstdlib>
+	<iostream>
+	<string.h>
+	"DBCommands.h"
+	"NdimArray.h"
+
+1699585963 /home/user/Temp/Entropy2/Entropy/DBCommands.h
+	<string.h>
+
+1699585883 /home/user/Temp/Entropy2/Entropy/NdimArray.h
+	<iostream>
+	<math.h>
+
