@@ -11,7 +11,7 @@ using namespace std;
 int main()
 {
     DataBase *DB;
-    for (int i=1;i<=5;i++){
+    for (int i=1;i<=12;i++){
         DB=new DataBase();
         DB->ReadChains(i, (char *)FILENAME);
         printf("Memory=%d, %.3f\n",i,DB->CalcEntropy());
